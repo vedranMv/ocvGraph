@@ -9,3 +9,11 @@ For compiling sources in /examples from terminal you can use the command below f
 
 NOTE: Replace 'opencv-3.2.0-dev' with your version of OpenCV.
 
+
+Results from example/main.cpp program:
+
+![alt tag](https://hsr.duckdns.org/images/polarRadar.png)
+
+![alt tag](https://hsr.duckdns.org/images/parabola.png)
+
+![alt tag](https://hsr.duckdns.org/images/lines.png)

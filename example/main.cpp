@@ -26,9 +26,9 @@ int main(int argc, char **argv)
 {
     srand(time(NULL));
 
-    /*
-     *  Example 1: Plot random lines in polar coordinates, starting from origin
-     */
+    /***************************************************************************
+     **  Example 1: Plot random lines in polar coordinates, starting from origin
+     **************************************************************************/
      // Set center to be in the middle of bottom edge
     plot.SetCenter(200, 200);
     //  Plot circles in the origin of coordinate system
@@ -47,23 +47,47 @@ int main(int argc, char **argv)
     cv::imshow("Plot", plot.GetMatImg());
     cv::waitKey();
 
-    /*
-     *  Example 2: Plot parabola using PolyN function
-     */
-     // Clear old plot
-    plot.Clear();
-    //  Shift origin 200px from left edge and 100 pixels from top edge
-    plot.SetCenter(200, 100);
-    //  Plot circle with center at origin
-    plot.Circle(20);
+    /***************************************************************************
+     ****************************  Example 2: Plot parabola using PolyN function
+     **************************************************************************/
+     // Clear old plot and make origin of graph in center of the image
+    plot.Clear(true);
+    //  Plot data axes with divisions every 10 units in X & Y direction
+    plot.AddAxes(10, 10);
 
-    //  Plot parabola with equation y=2x^2+x-1
+    //  Plot parabola with equation y=0.1x^2-20*x+940 on interval [+80, +120]
     vector<double> cof;
-    cof.push_back(-1);   //  Coefficient with x^0
-    cof.push_back(1);   //  Coefficient with x^1
-    cof.push_back(0.3);   //  Coefficient with x^2
+    cof.push_back(940);     //  Coefficient with x^0
+    cof.push_back(-20);     //  Coefficient with x^1
+    cof.push_back(0.1);     //  Coefficient with x^2
+    plot.PolyN(cof, 80, 120);
+
+    //  Plot graph
+    cv::imshow("Plot", plot.GetMatImg());
+    cv::waitKey();
+
+    /***************************************************************************
+     ****************************  Example 3: Append couple of lines to the plot
+     **************************************************************************/
+    //  Plot equation y=-2x
+    cof.clear();
+    cof.push_back(0);       //  Coefficient with x^0
+    cof.push_back(-0.5);    //  Coefficient with x^1
     plot.PolyN(cof);
 
+    //  Plot equation y=0.3x+10, on interval from -70 to 50
+    cof.clear();
+    cof.push_back(10);     //  Coefficient with x^0
+    cof.push_back(0.3);    //  Coefficient with x^1
+    plot.PolyN(cof, -70, 50);
+
+    //  Plot equation y=1x+12, on interval from -50 to 50
+    cof.clear();
+    cof.push_back(12);      //  Coefficient with x^0
+    cof.push_back(1);       //  Coefficient with x^1
+    plot.PolyN(cof, -50, 50);
+
+    plot.AddAxes(10, 10);
     cv::imshow("Plot", plot.GetMatImg());
     cv::waitKey();
 

@@ -17,11 +17,12 @@
  *  +Save plot to a given path
  *  V1.2.0 - 17.6.2017
  *  +Added clear function to reset the graph
- *  +Added option to plot N-degree polynomials in Cartesian
+ *  +Added option to plot N-degree polynomials in Cartesian, within given range
+ *  +Show data axes, variable number of divisions for X and Y axes
  *
  *  TODO:
  *  +Add ability to plot arbitrary functions
- *  +Add support for zoom in/out
+ *  +Add support for zoom in/out(scaling)
  */
 
 #ifndef OCVGRAPH_H
@@ -39,9 +40,12 @@ public:
     OCVGraph(int height, int width, const cv::Scalar &s =cv::Scalar::all(255));
     ~OCVGraph();
 
-    void SetCenter(int uc, int vc);
-    void SetCenter(cv::Point2i center);
-    cv::Point2i& GetCenter();
+    void            SetCenter(int uc, int vc);
+    void            SetCenter(cv::Point2i center);
+    cv::Point2i&    GetCenter();
+
+    void            SetScale(double scale);
+    double          GetScale();
 
     void LineCartesian(cv::Point2i p1, cv::Point2i p2 = cv::Point2i(0,0),
                        cv::Scalar color = cv::Scalar::all(0),
@@ -57,12 +61,16 @@ public:
 
     void PolyN(std::vector<double>&coefs, double xmin=0, double xmax=0);
 
-    void Text(std::string txt, cv::Point2i p1);
+    void Text(std::string txt, cv::Point2i p1, int fontFace=2, double scale=0.3,
+              cv::Scalar color=cv::Scalar::all(128), int thickness=1,
+              int lineType=8, bool blo=false);
+
+    void AddAxes(double xticks = 1.0, double yticks = 1.0);
 
 
-    void Export(std::string path);
-    cv::Mat& GetMatImg();
-    void Clear(bool resetCenter = false);
+    void        Export(std::string path);
+    cv::Mat&    GetMatImg();
+    void        Clear(bool resetCenter = false);
 
     OCVGraph& operator=(OCVGraph& arg);
     OCVGraph& operator=(OCVGraph arg);
