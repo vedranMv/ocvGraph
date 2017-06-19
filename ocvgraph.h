@@ -8,7 +8,7 @@
  *
  *  Current API tries to follow OpenCV argument naming and order as much as possible
  *
- *  @version 1.2.0
+ *  @version 1.3.0
  *  V1.0.0 - 1.6.2017
  *  +Custom origin of coordinate system at any point of image. Support for
  *  plotting circles, lines (in Cartesian and polar coordinate system) and
@@ -19,17 +19,15 @@
  *  +Added clear function to reset the graph
  *  +Added option to plot N-degree polynomials in Cartesian, within given range
  *  +Show data axes, variable number of divisions for X and Y axes
- *  V1.3.0
+ *  V1.3.0 -20.6.2017
  *  +Added macros for common colors
  *  +Can print legend based on the color of a function
  *  +Added interface for setting X and Y intervals for axes
- *  +Fixed PolyN function by adding more options for customization
- *  -BROKE: Example 1 doesn't work, cannot plot with uneven limits for +X and -X,
- *    as well as +Y and -Y
+ *  +Expanded PolyN function by adding more options for customization
+ *
  *
  *  TODO:
  *  +Add ability to plot arbitrary functions
- *  +Add support for zoom in/out(scaling)
  */
 
 #ifndef OCVGRAPH_H
@@ -49,9 +47,9 @@
 #define COLOR_RED       cv::Scalar(  0,  0,255)
 #define COLOR_GREEN     cv::Scalar(  0,255,  0)
 #define COLOR_BLUE      cv::Scalar(255,  0,  0)
-#define COLOR_YELLOW
-#define COLOR_PURPLE
-#define COLOR_BROWN
+#define COLOR_YELLOW    cv::Scalar(  0,255,255)
+#define COLOR_PURPLE    cv::Scalar(0x80,0,0x80)
+#define COLOR_BROWN     cv::Scalar(0x2A,0x2A,0xA5)
 
 //  Perimitted directions to place legend
 enum legLoc {TopLeft, TopRight, BottomLeft, BottomRight, Left, Right};
@@ -70,8 +68,8 @@ public:
     void            SetCenter(cv::Point2i center);
     cv::Point2i&    GetCenter();
 
-    void SetXRange(double xmax);
-    void SetYRange(double ymax);
+    void SetRange(double xmin, double xmax, double ymin, double ymax);
+    void SetXRangeKeepAspectR(double xmin, double xmax, bool moveCenter=false);
 
     void LineCartesian(cv::Point2d p1, cv::Point2d p2 = cv::Point2d(0,0),
                        cv::Scalar color = cv::Scalar::all(0),
@@ -96,7 +94,7 @@ public:
     void AddAxes(double xticks = 1.0, double yticks = 1.0, int xlarge = 5,
                  int ylarge = 5);
     void AddToLegend(uint8_t index, cv::Scalar color, std::string txt,
-                     int fontFace=2, double scale=0.3);
+                     int fontFace=2, double scale=0.4);
     void AppendLegend(legLoc location = TopRight);
 
     void        Export(std::string path);
