@@ -19,6 +19,13 @@
  *  +Added clear function to reset the graph
  *  +Added option to plot N-degree polynomials in Cartesian, within given range
  *  +Show data axes, variable number of divisions for X and Y axes
+ *  V1.3.0
+ *  +Added macros for common colors
+ *  +Can print legend based on the color of a function
+ *  +Added interface for setting X and Y intervals for axes
+ *  +Fixed PolyN function by adding more options for customization
+ *  -BROKE: Example 1 doesn't work, cannot plot with uneven limits for +X and -X,
+ *    as well as +Y and -Y
  *
  *  TODO:
  *  +Add ability to plot arbitrary functions
@@ -30,7 +37,26 @@
 
 #include <opencv2/opencv.hpp>
 #include <string>
+#include <tuple>
+#include <vector>
 
+/* Commonly used colors    */
+#define COLOR_BLACK     cv::Scalar(  0,  0,  0)
+#define COLOR_WHITE     cv::Scalar(255,255,255)
+#define COLOR_25GREY    cv::Scalar( 64, 64, 64)
+#define COLOR_50GREY    cv::Scalar(128,128,128)
+#define COLOR_75GREY    cv::Scalar(192,192,192)
+#define COLOR_RED       cv::Scalar(  0,  0,255)
+#define COLOR_GREEN     cv::Scalar(  0,255,  0)
+#define COLOR_BLUE      cv::Scalar(255,  0,  0)
+#define COLOR_YELLOW
+#define COLOR_PURPLE
+#define COLOR_BROWN
+
+//  Perimitted directions to place legend
+enum legLoc {TopLeft, TopRight, BottomLeft, BottomRight, Left, Right};
+
+typedef std::tuple<uint8_t, cv::Scalar, std::string, int, double> legEntry;
 
 class OCVGraph
 {
@@ -44,29 +70,34 @@ public:
     void            SetCenter(cv::Point2i center);
     cv::Point2i&    GetCenter();
 
-    void            SetScale(double scale);
-    double          GetScale();
+    void SetXRange(double xmax);
+    void SetYRange(double ymax);
 
-    void LineCartesian(cv::Point2i p1, cv::Point2i p2 = cv::Point2i(0,0),
+    void LineCartesian(cv::Point2d p1, cv::Point2d p2 = cv::Point2d(0,0),
                        cv::Scalar color = cv::Scalar::all(0),
                        int thickness=1, int lineType=8, int shift=0);
 
-    void LinePolar(double angle, double rad, cv::Point2i p2 = cv::Point2i(0,0),
+    void LinePolar(double angle, double rad, cv::Point2d p2 = cv::Point2d(0,0),
                    cv::Scalar color = cv::Scalar::all(0),
                    int thickness=1, int lineType=8, int shift=0);
 
-    void Circle(double rad, cv::Point2i p1 = cv::Point2i(0,0),
+    void Circle(double rad, cv::Point2d p1 = cv::Point2d(0,0),
                 cv::Scalar color = cv::Scalar::all(0), int thickness=1,
                 int lineType=8, int shift=0);
 
-    void PolyN(std::vector<double>&coefs, double xmin=0, double xmax=0);
+    void PolyN(std::vector<double>&coefs, double xmin=0, double xmax=0,
+               cv::Scalar color = cv::Scalar::all(0), int thickness=1,
+               int lineType=8, int shift=0);
 
-    void Text(std::string txt, cv::Point2i p1, int fontFace=2, double scale=0.3,
+    void Text(std::string txt, cv::Point2d p1, int fontFace=2, double scale=0.3,
               cv::Scalar color=cv::Scalar::all(128), int thickness=1,
               int lineType=8, bool blo=false);
 
-    void AddAxes(double xticks = 1.0, double yticks = 1.0);
-
+    void AddAxes(double xticks = 1.0, double yticks = 1.0, int xlarge = 5,
+                 int ylarge = 5);
+    void AddToLegend(uint8_t index, cv::Scalar color, std::string txt,
+                     int fontFace=2, double scale=0.3);
+    void AppendLegend(legLoc location = TopRight);
 
     void        Export(std::string path);
     cv::Mat&    GetMatImg();
@@ -80,10 +111,14 @@ private:
     cv::Point2d _UVtoXY(cv::Point2i imageCoord);
     cv::Point2i _XYtoUV(cv::Point2d graphCoord);
 
+
 private:
-    cv::Mat         _graphHolder;
-    cv::Point2i     _center;
-    cv::Scalar      _background;
+    cv::Mat                 _graphHolder;
+    cv::Point2i             _center;
+    cv::Scalar              _background;
+    std::vector<legEntry>   _legend;
+    double                  _xlim[2];
+    double                  _ylim[2];
 };
 
 #endif // OCVGRAPH_H
