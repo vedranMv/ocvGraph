@@ -27,17 +27,30 @@ Results from example/main.cpp program:
 Change-log:
 
  *  V1.0.0 - 1.6.2017
-   +Custom origin of coordinate system at any point of image. Support for
- *  plotting circles, lines (in Cartesian and polar coordinate system) and
- *  writing text.
+   
++Custom origin of coordinate system at any point of image. Support for plotting circles, lines (in Cartesian and polar coordinate system) and writing text.
+
  *  V1.1.0
+
    +Save plot to a given path
+
+
  *  V1.2.0 - 17.6.2017
+
    +Added clear function to reset the graph
+
    +Added option to plot N-degree polynomials in Cartesian, within given range
+
    +Show data axes, variable number of divisions for X and Y axes
+
+
  *  V1.3.0 -20.6.2017
+
    +Added macros for common colors
+
    +Can print legend based on the color of a function
+
    +Added interface for setting X and Y intervals for axes
+
    +Expanded PolyN function by adding more options for customization
+
