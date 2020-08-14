@@ -18,11 +18,11 @@ NOTE: Replace 'opencv-3.2.0-dev' with your version of OpenCV.
 
 Results from example/main.cpp program:
 
-![alt tag](https://hsr.duckdns.org/images/polarRadar.png)
+![alt tag](https://vedran.ml/public/images/polarRadar.png)
 
-![alt tag](https://hsr.duckdns.org/images/parabola.png)
+![alt tag](https://vedran.ml/public/images/parabola.png)
 
-![alt tag](https://hsr.duckdns.org/images/lines.png)
+![alt tag](https://vedran.ml/public/images/lines.png)
 
 Change-log:
 
